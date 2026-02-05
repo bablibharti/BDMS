@@ -1,159 +1,126 @@
-🩸 BDMS – Blood Donation Management System
+# 🩸 BDMS – Blood Donation Management System
 
-A full-stack Blood Donation Management System (BDMS) that connects donors, receivers, and admins to efficiently manage blood donation requests, donor verification, and request assignment.
+BDMS is a full-stack web application designed to efficiently manage blood donors, blood requests, and admin operations.  
+It helps hospitals and users quickly find verified donors and manage blood requests securely.
 
-Built with modern web technologies, role-based access control, and an admin SaaS-style dashboard.
+---
 
-🚀 Features
-👤 User (Donor / Receiver)
+## 🚀 Features
 
-User registration & login
+### 👤 User
+- Register & login
+- Request blood
+- View request status
 
-Role-based dashboards
+### 🩸 Donor
+- Register as donor
+- Get verified by admin
+- Can be assigned to blood requests
 
-Donor verification system
+### 🛠️ Admin Dashboard
+- View system stats (users, donors, requests)
+- Verify / block / unblock donors
+- Approve blood requests
+- Assign donors manually or automatically
+- Secure admin-only access
 
-Blood request creation & tracking
+---
 
-🛡️ Admin Panel (SaaS Dashboard)
+## 🧱 Tech Stack
 
-Secure admin authentication
+### Frontend
+- React.js
+- Tailwind CSS
+- React Router
+- Axios
+- Lucide Icons
 
-View platform statistics (users, donors, requests)
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- Role-based access (Admin/User/Donor)
 
-Verify / block / unblock donors
+---
 
-Approve blood requests
+## 🔐 Security
+- JWT-based authentication
+- Admin & protected routes
+- Role-based middleware
+- Secure API access
 
-Assign donors manually or automatically
+---
 
-Modern sidebar layout with cards & charts
+## 📂 Project Structure
 
-🔐 Security
-
-JWT authentication
-
-Role-based authorization
-
-Protected admin routes
-
-Secure API access
-
-🧑‍💻 Tech Stack
-Frontend
-
-React (Vite)
-
-Tailwind CSS
-
-React Router
-
-Lucide Icons
-
-Chart.js
-
-Backend
-
-Node.js
-
-Express.js
-
-MongoDB
-
-Mongoose
-
-JWT
-
-bcrypt
-
-📁 Project Structure
 BDMS/
-├── frontend/
-│   ├── src/
-│   │   ├── auth/
-│   │   ├── pages/
-│   │   ├── layouts/
-│   │   ├── routes/
-│   │   └── App.jsx
-│   └── .gitignore
-│
 ├── backend/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   ├── server.js
-│   └── .gitignore
+│ ├── controllers/
+│ ├── middleware/
+│ ├── models/
+│ ├── routes/
+│ ├── server.js
+│ └── .env
+│
+├── frontend/
+│ ├── src/
+│ ├── public/
+│ └── .env
 │
 └── README.md
 
-⚙️ Installation & Setup
-1️⃣ Clone the repositories
-git clone https://github.com/your-username/bdms-frontend.git
-git clone https://github.com/your-username/bdms-backend.git
 
-2️⃣ Backend Setup
+---
+
+## ⚙️ Environment Variables
+
+### Backend (`backend/.env`)
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+
+Frontend (frontend/.env)
+VITE_API_URL=http://localhost:5000
+
+🧪 Run Locally
+Backend
 cd backend
 npm install
+npm run dev
 
-
-Create .env file:
-
-PORT=5000
-MONGO_URI=your_mongodb_url
-JWT_SECRET=your_secret_key
-
-
-Run backend:
-
-npm start
-
-3️⃣ Frontend Setup
+Frontend
 cd frontend
 npm install
 npm run dev
 
 🌍 Deployment
 
-Frontend → Vercel
+Backend: Render
 
-Backend → Render
+Frontend: Vercel
 
-Database → MongoDB Atlas
-
-CI/CD enabled via GitHub — auto deploy on push 🚀
-
-📊 Admin Capabilities
-Feature	Status
-View all users	✅
-Verify donors	✅
-Block / unblock users	✅
-Approve requests	✅
-Assign donors	✅
-Auto donor matching	✅
-🧠 Future Enhancements
-
-Real-time notifications
-
-SMS / Email alerts
-
-Location-based donor matching
-
-Analytics dashboard
-
-Mobile app integration
-
-🤝 Contributing
+🤝 Contribution
 
 Pull requests are welcome.
 For major changes, please open an issue first.
 
-📜 License
-
-This project is licensed under the MIT License.
-
-👨‍💻 Author
+📌 Author
 
 Babli Bharti
-2nd Year CSE | Full-Stack Developer
-🚀 Focused on System Design, SaaS, and Scalable Web Apps
+GitHub: https://github.com/bablibharti
+
+
+📸 Later we’ll add **screenshots section** (after deploy).
+
+---
+
+# ✅ 2️⃣ Backend Deployment → **Render**
+
+### 🔹 Step 1: Prepare backend
+In `backend/server.js`:
+```js
+app.get("/", (req, res) => {
+  res.send("BDMS Backend is running 🚀");
+});
