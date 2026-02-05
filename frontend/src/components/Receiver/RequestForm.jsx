@@ -1,0 +1,19 @@
+export default function RequestList({ requests }) {
+  if (!requests || requests.length === 0)
+    return <p>No requests found.</p>;
+
+  return (
+    <div className="grid md:grid-cols-2 gap-4">
+      {requests.map((req) => (
+        <div key={req._id} className="border p-3 rounded shadow bg-white">
+          <p><strong>Patient:</strong> {req.patientName}</p>
+          <p><strong>Blood Group:</strong> {req.bloodGroup}</p>
+          <p><strong>Units Needed:</strong> {req.unitsNeeded}</p>
+          <p><strong>Hospital:</strong> {req.hospital}</p>
+          <p><strong>City:</strong> {req.city}</p>
+          <p><strong>Status:</strong> {req.status}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
