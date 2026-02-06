@@ -4,7 +4,7 @@ import {
   updateProfile,
   toggleAvailability,
   searchDonors
-} from "../api/donorApi";
+} from "../../api/donorApi.js";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 

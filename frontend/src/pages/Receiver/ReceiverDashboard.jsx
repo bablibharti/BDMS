@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import RequestForm from "../components/Receiver/RequestForm";
-import RequestList from "../components/Receiver/RequestList";
-import { getMyRequests } from "../api/requestApi";
+import RequestForm from "../../components/Receiver/RequestForm";
+import RequestList from "../../components/Receiver/RequestList";
+import { getMyRequests } from "../../api/requestApi.js";
 
 export default function ReceiverDashboard() {
   const [requests, setRequests] = useState([]);

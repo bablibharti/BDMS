@@ -102,6 +102,14 @@ export default function Register() {
         >
           Register
         </button>
+
+        <p className="text-center text-sm mt-3">
+        Already have an account?{" "}
+        <Link to="/login" className="text-green-600 font-semibold">
+          Login
+        </Link>
+      </p>
+
       </form>
     </div>
   );
