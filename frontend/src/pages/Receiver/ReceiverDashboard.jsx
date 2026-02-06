@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import RequestForm from "../../components/Receiver/RequestForm";
 import RequestList from "../../components/Receiver/RequestList";
 import { getMyRequests } from "../../api/requestApi.js";
+import LogoutButton from "../../components/LogoutButton";
 
 export default function ReceiverDashboard() {
   const [requests, setRequests] = useState([]);
@@ -27,6 +28,8 @@ export default function ReceiverDashboard() {
   return (
     <div className="p-6 min-h-screen bg-red-50">
       <h1 className="text-3xl font-bold mb-6">Receiver Dashboard</h1>
+
+      <LogoutButton />
 
       {/* Form to create a new request */}
       <RequestForm onRequestCreated={fetchRequests} />

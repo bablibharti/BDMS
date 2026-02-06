@@ -5,6 +5,7 @@ import {
   toggleAvailability,
   searchDonors
 } from "../../api/donorApi.js";
+import LogoutButton from "../../components/LogoutButton";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 
@@ -79,6 +80,8 @@ export default function DonorDashboard() {
   return (
     <div className="p-6 min-h-screen bg-green-50">
       <h1 className="text-3xl font-bold mb-6">Donor Dashboard</h1>
+
+ <LogoutButton />
 
       {/* Profile */}
       <div className="bg-white p-4 rounded shadow mb-6">
