@@ -1,126 +1,65 @@
+<div align="center">
+
 # 🩸 BDMS – Blood Donation Management System
 
-BDMS is a full-stack web application designed to efficiently manage blood donors, blood requests, and admin operations.  
-It helps hospitals and users quickly find verified donors and manage blood requests securely.
+**A full-stack platform connecting donors, receivers, and admins to save lives efficiently.**
 
----
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://mongodb.com/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white)](https://jwt.io/)
 
-## 🚀 Features
+</div>
 
-### 👤 User
-- Register & login
-- Request blood
-- View request status
+## 🌟 Overview
 
-### 🩸 Donor
-- Register as donor
-- Get verified by admin
-- Can be assigned to blood requests
+BDMS is a secure, scalable web application that helps:
 
-### 🛠️ Admin Dashboard
-- View system stats (users, donors, requests)
-- Verify / block / unblock donors
-- Approve blood requests
-- Assign donors manually or automatically
-- Secure admin-only access
+- **Receivers** quickly request blood with hospital details
+- **Donors** register, get verified, and become available for matching
+- **Admins** manage users, verify donors, approve requests, and assign donors manually or automatically
 
----
+Built with modern technologies and focused on real-world blood donation urgency.
 
-## 🧱 Tech Stack
+## ✨ Key Features
 
-### Frontend
-- React.js
-- Tailwind CSS
-- React Router
-- Axios
-- Lucide Icons
+| Feature                        | Description                                                                 |
+|-------------------------------|-----------------------------------------------------------------------------|
+| 🔐 Secure Authentication       | JWT + Role-based access (Admin / Donor / Receiver)                          |
+| 🩸 Blood Request System        | Create, track, approve & auto-match requests                                |
+| 👤 Donor Verification          | Admin verifies donors before they can be matched                            |
+| 🚀 Admin Dashboard             | Stats overview, user management, request handling                           |
+| 📊 Real-time Matching          | Auto-match donors based on blood group & location                           |
+| 🛡️ Secure & Role-Protected     | Protected routes & middleware for every role                                |
+
+## 🛠️ Tech Stack
+
+| Layer       | Technology                            | Purpose                              |
+|------------|---------------------------------------|--------------------------------------|
+| Frontend   | React 18 + Vite                       | Fast development & build             |
+| Styling    | Tailwind CSS + Shadcn/ui              | Beautiful, consistent UI             |
+| Routing    | React Router v6                       | Protected & public routes            |
+| Icons      | Lucide React                          | Modern, clean icons                  |
+| Backend    | Node.js + Express                     | REST API server                      |
+| Database   | MongoDB (Mongoose)                    | Flexible document storage            |
+| Auth       | JWT + bcrypt                          | Secure authentication                |
+| Deployment | Vercel (frontend) + Render (backend)  | Free & fast hosting                  |
+
+## 📸 Screenshots (coming soon)
+
+(After deployment we'll add real screenshots here)
+
+## ⚡ Quick Start (Local Development)
+
+### Prerequisites
+
+- Node.js ≥ 18
+- MongoDB (local or Atlas)
+- Git
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB
-- JWT Authentication
-- Role-based access (Admin/User/Donor)
 
----
-
-## 🔐 Security
-- JWT-based authentication
-- Admin & protected routes
-- Role-based middleware
-- Secure API access
-
----
-
-## 📂 Project Structure
-
-BDMS/
-├── backend/
-│ ├── controllers/
-│ ├── middleware/
-│ ├── models/
-│ ├── routes/
-│ ├── server.js
-│ └── .env
-│
-├── frontend/
-│ ├── src/
-│ ├── public/
-│ └── .env
-│
-└── README.md
-
-
----
-
-## ⚙️ Environment Variables
-
-### Backend (`backend/.env`)
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-
-Frontend (frontend/.env)
-VITE_API_URL=http://localhost:5000
-
-🧪 Run Locally
-Backend
+```bash
 cd backend
 npm install
-npm run dev
-
-Frontend
-cd frontend
-npm install
-npm run dev
-
-🌍 Deployment
-
-Backend: Render
-
-Frontend: Vercel
-
-🤝 Contribution
-
-Pull requests are welcome.
-For major changes, please open an issue first.
-
-📌 Author
-
-Babli Bharti
-GitHub: https://github.com/bablibharti
-
-
-📸 Later we’ll add **screenshots section** (after deploy).
-
----
-
-# ✅ 2️⃣ Backend Deployment → **Render**
-
-### 🔹 Step 1: Prepare backend
-In `backend/server.js`:
-```js
-app.get("/", (req, res) => {
-  res.send("BDMS Backend is running 🚀");
-});
