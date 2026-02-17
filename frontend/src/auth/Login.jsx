@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // ✅ Added Link
 import api from "../api/axios";
 
 export default function Login() {
@@ -9,7 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // ✅ Clear form when page loads
+  // Clear form when page loads
   useEffect(() => {
     setEmail("");
     setPassword("");
@@ -26,11 +26,9 @@ export default function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      // ✅ Clear fields AFTER success
       setEmail("");
       setPassword("");
 
-      // role-based redirect
       const role = res.data.user.role;
       if (role === "admin") navigate("/admin/dashboard");
       else if (role === "donor") navigate("/donor-dashboard");
@@ -54,6 +52,7 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           className="w-full border p-2 mb-3 rounded"
+          required
         />
 
         <input
@@ -62,11 +61,21 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           className="w-full border p-2 mb-4 rounded"
+          required
         />
 
-        <button className="w-full bg-green-600 text-white py-2 rounded">
+        <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
           Login
         </button>
+
+        {/* ✅ Register Link Added Here */}
+        <p className="text-center text-sm mt-4">
+          Don’t have an account?{" "}
+          <Link to="/register" className="text-green-600 font-semibold hover:underline">
+            Register
+          </Link>
+        </p>
+
       </form>
     </div>
   );
