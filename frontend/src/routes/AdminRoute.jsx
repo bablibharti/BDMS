@@ -2,6 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const AdminRoute = () => {
   const token = localStorage.getItem("token");
+  console.log("AdminRoute is running – current path:", window.location.pathname);
 
   let user = null;
   try {

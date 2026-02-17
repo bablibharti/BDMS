@@ -16,13 +16,16 @@ import AdminRoute from "./routes/AdminRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import AdminLayout from "./layouts/AdminLayout";
+import Home from "./pages/Home";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* 🌐 Public */}
+        {/* ─── Public / Landing ────────────────────────────────────────────── */}
+        <Route path="/" element={<Home />} />   {/* Main landing page */}
+
         <Route
           path="/login"
           element={<PublicRoute><Login /></PublicRoute>}
@@ -32,7 +35,7 @@ export default function App() {
           element={<PublicRoute><Register /></PublicRoute>}
         />
 
-        {/* 👤 Donor */}
+        {/* ─── Donor (protected) ───────────────────────────────────────────── */}
         <Route
           path="/donor-dashboard"
           element={
@@ -42,7 +45,7 @@ export default function App() {
           }
         />
 
-        {/* 🩸 Receiver */}
+        {/* ─── Receiver (protected) ────────────────────────────────────────── */}
         <Route
           path="/receiver-dashboard"
           element={
@@ -52,21 +55,27 @@ export default function App() {
           }
         />
 
-        {/* 🔐 Admin */}
+        {/* ─── Admin Section ───────────────────────────────────────────────── */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
+        {/* All /admin/* routes are protected by AdminRoute */}
         <Route path="/admin" element={<AdminRoute />}>
           <Route element={<AdminLayout />}>
-            <Route index element={<Navigate to="dashboard" />} />
+            {/* Redirect /admin → /admin/dashboard */}
+            <Route index element={<Navigate to="dashboard" replace />} />
+
             <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="users" element={<Users />} />
-            <Route path="requests" element={<Requests />} />
-            <Route path="donors" element={<Donors />} />
+            <Route path="users"      element={<Users />} />
+            <Route path="requests"   element={<Requests />} />
+            <Route path="donors"     element={<Donors />} />
+
+            {/* Optional: catch invalid admin sub-paths */}
+            <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
           </Route>
         </Route>
 
-        {/* fallback */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        {/* ─── Fallback (404-like) ─────────────────────────────────────────── */}
+        <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>
     </BrowserRouter>

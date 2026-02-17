@@ -5,6 +5,7 @@ import {
   Droplet,
   ClipboardList,
   AlertCircle,
+  Activity,
 } from "lucide-react";
 
 import {
@@ -14,135 +15,163 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  CartesianGrid,
 } from "recharts";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import API from "../../services/adminApi";
 
-const MetricCard = ({ title, value, icon: Icon, color, badge }) => {
-  return (
-    <Card className="relative overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1">
-      {/* Watermark Icon */}
-      <div className="absolute right-4 top-4 opacity-10">
-        <Icon size={80} />
-      </div>
-
-      <CardContent className="p-6">
-        <p className="text-sm text-muted-foreground">
-          {title}
-        </p>
-
-        <h2 className="text-4xl font-bold mt-2">
-          {value}
-        </h2>
-
-        {badge && (
-          <Badge className="mt-3" variant="secondary">
-            {badge}
-          </Badge>
-        )}
-
-        <div
-          className={`mt-4 inline-flex items-center justify-center rounded-xl p-3 ${color} bg-opacity-15`}
-        >
-          <Icon className={`${color.replace("bg", "text")} h-6 w-6`} />
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    API.get("/stats").then((res) => setStats(res.data));
+    const loadStats = async () => {
+      try {
+        const res = await API.get("/stats");
+        setStats(res.data || {});
+      } catch (err) {
+        console.error("Failed to load stats:", err);
+        setError("Could not load dashboard data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadStats();
   }, []);
 
-  if (!stats) return null;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Activity className="h-12 w-12 animate-spin text-red-600 mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md">
+          <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-gray-800 mb-2">Error</h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Safe fallback values if stats is missing fields
+  const safeStats = {
+    totalUsers: stats?.totalUsers ?? 0,
+    totalDonors: stats?.totalDonors ?? 0,
+    totalRequests: stats?.totalRequests ?? 0,
+    pendingRequests: stats?.pendingRequests ?? 0,
+  };
 
   const chartData = [
-    { name: "Users", value: stats.totalUsers },
-    { name: "Donors", value: stats.totalDonors },
-    { name: "Requests", value: stats.totalRequests },
-    { name: "Pending", value: stats.pendingRequests },
+    { name: "Total Users", value: safeStats.totalUsers, fill: "#3b82f6" },
+    { name: "Active Donors", value: safeStats.totalDonors, fill: "#ef4444" },
+    { name: "Blood Requests", value: safeStats.totalRequests, fill: "#8b5cf6" },
+    { name: "Pending", value: safeStats.pendingRequests, fill: "#f59e0b" },
   ];
 
-  const StatCard = ({ title, value, icon: Icon, color }) => (
-    <div className="bg-white rounded-xl p-6 shadow-sm border flex justify-between">
-      <div>
-        <p className="text-gray-500 text-sm">{title}</p>
-        <h3 className="text-3xl font-bold">{value}</h3>
-      </div>
-      <div className={`${color} p-3 rounded-full bg-opacity-15`}>
-        <Icon className={`${color.replace("bg", "text")}`} />
-      </div>
-    </div>
-  );
-
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+    <div className="p-6 min-h-screen bg-gray-50">
+      <h1 className="text-3xl font-bold mb-8 text-gray-900">Admin Dashboard</h1>
 
-      {/* STATS */}
-<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-  <MetricCard
-    title="Total Users"
-    value={stats.totalUsers}
-    icon={Users}
-    color="bg-blue-600"
-    badge="+ Active"
-  />
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+        <Card className="relative overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 rounded-xl">
+          <CardContent className="p-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-sm text-gray-500">Total Users</p>
+                <h2 className="text-4xl font-bold mt-1">{safeStats.totalUsers}</h2>
+              </div>
+              <div className="bg-blue-100 p-4 rounded-full">
+                <Users className="h-8 w-8 text-blue-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-  <MetricCard
-    title="Total Donors"
-    value={stats.totalDonors}
-    icon={Droplet}
-    color="bg-red-600"
-    badge="Verified"
-  />
+        <Card className="relative overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 rounded-xl">
+          <CardContent className="p-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-sm text-gray-500">Total Donors</p>
+                <h2 className="text-4xl font-bold mt-1">{safeStats.totalDonors}</h2>
+              </div>
+              <div className="bg-red-100 p-4 rounded-full">
+                <Droplet className="h-8 w-8 text-red-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-  <MetricCard
-    title="Blood Requests"
-    value={stats.totalRequests}
-    icon={ClipboardList}
-    color="bg-purple-600"
-  />
+        <Card className="relative overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 rounded-xl">
+          <CardContent className="p-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-sm text-gray-500">Blood Requests</p>
+                <h2 className="text-4xl font-bold mt-1">{safeStats.totalRequests}</h2>
+              </div>
+              <div className="bg-purple-100 p-4 rounded-full">
+                <ClipboardList className="h-8 w-8 text-purple-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-  <MetricCard
-    title="Pending Requests"
-    value={stats.pendingRequests}
-    icon={AlertCircle}
-    color="bg-yellow-500"
-    badge="Needs action"
-  />
-</div>
+        <Card className="relative overflow-hidden hover:shadow-lg transition-shadow border border-gray-200 rounded-xl">
+          <CardContent className="p-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-sm text-gray-500">Pending Requests</p>
+                <h2 className="text-4xl font-bold mt-1">{safeStats.pendingRequests}</h2>
+              </div>
+              <div className="bg-yellow-100 p-4 rounded-full">
+                <AlertCircle className="h-8 w-8 text-yellow-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-
-      {/* CHART */}
-<Card className="hover:shadow-xl transition">
-  <CardContent className="p-6">
-    <h2 className="text-xl font-semibold mb-4">
-      System Overview
-    </h2>
-
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={chartData}>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Bar
-          dataKey="value"
-          fill="#dc2626"
-          radius={[6, 6, 0, 0]}
-        />
-      </BarChart>
-    </ResponsiveContainer>
-  </CardContent>
-</Card>
-
+      {/* Chart */}
+      <Card className="hover:shadow-lg transition-shadow border border-gray-200 rounded-xl overflow-hidden">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold flex items-center gap-2">
+            <Activity className="h-5 w-5 text-red-600" />
+            System Overview
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6 pt-2">
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="name" stroke="#64748b" tick={{ fontSize: 12 }} />
+                <YAxis stroke="#64748b" tick={{ fontSize: 12 }} />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'white', 
+                    border: '1px solid #e2e8f0', 
+                    borderRadius: '8px', 
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)' 
+                  }} 
+                />
+                <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="#dc2626" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
